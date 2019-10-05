@@ -15,7 +15,7 @@ import { Form, Icon, Input, Button, message } from 'antd'
 import {reqLogin} from '../../api'
 //引入local数据工具函数
 import storageUtils from '../../utils/storageUtils'
-import memoryUtils from '../../utils/memoryUtils';
+import memoryUtils from '../../utils/memoryUtils'
 
 import logo from '../../assets/images/logo.png'
 import './login.less'
