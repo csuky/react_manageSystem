@@ -10,12 +10,13 @@ import jsonp from 'jsonp'
 
 import { message } from 'antd';
 
+const BASE = '';
 /**
  * 发送登录请求
  */
 
 //方法1、简写成箭头函数，并将ajax当作对象发post请求
-export const reqLogin = (username, password) => ajax.post('/login', {username, password});
+export const reqLogin = (username, password) => ajax.post(BASE+'/login', {username, password});
 //方法2、原始的请求函数形式
 /*export function reqLogin(username, password) {
     return ajax({  //data是对象，默认使用json格式的请求体携带参数数据
@@ -47,3 +48,21 @@ export const reqWeather = (city) => {
         })
     });
 };
+
+/**
+ * 发送获取分类列表的请求
+ */
+export const reqCategories = () => ajax(BASE + '/manage/category/list'); //get请求可以省略get
+
+/**
+ * 添加分类
+ */
+export const reqAddcategory = (categoryName) => ajax.post(BASE + '/manage/category/add', {categoryName});
+
+/**
+ * 修改分类
+ */
+export const reqUpdatecategory = ({categoryId, categoryName}) => ajax.post(BASE + '/manage/category/update', {
+    categoryId,
+    categoryName
+});
