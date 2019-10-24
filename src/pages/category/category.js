@@ -28,7 +28,10 @@ export default class Category extends Component {
       {
         title: '操作',
         width: 500,
-        render: () => <LinkButton>修改分类</LinkButton>,
+        render: (category) => <LinkButton onClick={() => {
+          this.category = category; //保存当前分类，其他地方都可以读取到
+          this.setState({ showStatus: 2 })
+        }}>修改分类</LinkButton>,
       },
     ];
   };
@@ -60,17 +63,28 @@ export default class Category extends Component {
     this.form.validateFields(async (err, values) => {
       if (!err) {
         //验证通过后，得到输入数据
-        const { categoryName } = values
-        //发添加分类的请求
-        const result = await reqAddcategory(categoryName)
+        const { categoryName } = values;
+        const {showStatus} = this.state;
+        let result;
+        if (showStatus===1) { //添加
+          //发添加分类的请求
+          result = await reqAddcategory(categoryName);
+        } else { //修改
+          const categoryId = this.category._id;
+          result = await reqUpdatecategory({ categoryId, categoryName });
+        }
+
+        this.form.resetFields(); //重置输入数据（变成了初始值）
         this.setState({showStatus:0});
+
+        const action = showStatus===1 ? '添加' : '修改';
         //根据请求响应结果，做不同处理
         if (result.status===0) {
           //重新获取分类列表显示
           this.getCategories()
-          message.success('添加分类成功')
+          message.success(action + '分类成功')
         } else {
-          message.error('添加分类失败')
+          message.error(action + '分类失败')
         }
       }
     });
@@ -81,6 +95,7 @@ export default class Category extends Component {
 
   //点击取消的回调
   handleCancel = () => {
+    this.form.resetFields(); //重置输入数据（变成了初始值）
     this.setState({
       showStatus: 0
     })
@@ -98,6 +113,9 @@ export default class Category extends Component {
 
     //取出状态数据
     const { categories, loading, showStatus } = this.state;
+
+    //读取更新的分类名称
+    const category = this.category || {};
 
     // Card右上角的结构
     const extra = (
@@ -124,7 +142,7 @@ export default class Category extends Component {
               onCancel={this.handleCancel}
           >
             {/*将子组件传递过来的form对象保存到当前组件对象上*/}
-            <AddUpdateForm setForm={form => this.form = form} />
+            <AddUpdateForm setForm={form => this.form = form} categoryName={category.name} />
           </Modal>
         </Card>
     )
