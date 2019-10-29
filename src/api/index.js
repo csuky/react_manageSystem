@@ -66,3 +66,29 @@ export const reqUpdatecategory = ({categoryId, categoryName}) => ajax.post(BASE 
     categoryId,
     categoryName
 });
+
+/**
+ * 获取商品分页列表
+ */
+export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {
+    params: { //包含所有query参数的对象
+        pageNum,
+        pageSize
+    }
+});
+
+/**
+ * 获取商品分页列表
+ */
+export const reqSearchProducts = ({
+        pageNum,
+        pageSize,
+        searchName,
+        searchType  //它的值是'productName'或者'productDesc'
+    }) => ajax(BASE + '/manage/product/search', {
+        params: {
+            pageNum,
+            pageSize,
+            [searchType]: searchName, //属性名加[]表示取这个属性名的值，这种情况用于属性值固定，而属性名不固定
+    }
+});

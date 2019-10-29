@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Card, Button, Icon, Table, message, Modal} from "antd";
+import {Card, Button, Icon, Table, message, Modal} from 'antd'
 
 import {reqCategories, reqAddcategory, reqUpdatecategory} from "../../api";
 import LinkButton from "../../components/link-button";
@@ -126,7 +126,7 @@ export default class Category extends Component {
     );
 
     return (
-        <Card extra={extra} >
+        <Card extra={extra}>
           <Table
               columns={this.columns}
               rowKey="_id"
