@@ -68,6 +68,15 @@ export const reqUpdatecategory = ({categoryId, categoryName}) => ajax.post(BASE 
 });
 
 /**
+ * 根据分类id获取分类
+ */
+export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', {
+    params: {
+        categoryId
+    }
+});
+
+/**
  * 获取商品分页列表
  */
 export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {
@@ -92,3 +101,37 @@ export const reqSearchProducts = ({
             [searchType]: searchName, //属性名加[]表示取这个属性名的值，这种情况用于属性值固定，而属性名不固定
     }
 });
+
+
+/**
+ * 根据商品ID获取商品
+ */
+export const reqProduct = (productId) => ajax(BASE + '/manage/product/info', {
+    params: {
+        productId
+    }
+});
+
+/**
+ * 对商品进行上架/下架处理
+ */
+export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/product/updateStatus', {
+    method: 'POST',
+    data: {
+        productId,
+        status
+    }
+});
+
+/**
+ * 删除图片
+ */
+export const reqDeleteImg = (name) => ajax.post(BASE + '/manage/img/delete', {name});
+
+/**
+ * 添加/修改商品
+ */
+export const reqAddUpdateProduct = (product) => ajax.post(
+    BASE + '/manage/product/' + (product._id ? 'update' : 'add'),//根据_id是否有值来判断是更新还是添加
+    product
+);
